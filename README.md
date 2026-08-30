@@ -12,6 +12,8 @@ A multi-agent AI application built with LangChain, Mistral AI, and FastAPI. It u
 🌐 HTML, CSS & JavaScript frontend
 📡 Frontend–backend API communication
 🏗️ Project Structure
+
+# Folder Structure
 Multi_agent_system/
 │
 ├── static/
