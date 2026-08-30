@@ -17,3 +17,4 @@ rich
 tavily-python
 beautifulsoup4
 fastapi
+uvicorn
