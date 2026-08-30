@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nexus &mdash; Multi-Agent Research Console</title>
+    <meta
+      name="description"
+      content="Watch four AI agents search, read, write and critique a research report in real time."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <div class="brand">
+          <span class="brand-mark">N</span>
+          <span class="brand-name"
+            >Nexus<span class="brand-dim">.research</span></span
+          >
+        </div>
+        <nav class="header-status">
+          <span class="dot" id="apiDot"></span>
+          <span id="apiStatusText">Checking engine&hellip;</span>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="hero wrap">
+        <p class="eyebrow">Autonomous research pipeline</p>
+        <h1 class="hero-title">
+          Four agents.<br />One evidence-backed report.
+        </h1>
+        <p class="hero-sub">
+          Give the console a topic. A search agent hunts sources, a reader agent
+          scrapes the most reliable one, a writer drafts the report, and a
+          critic scores it &mdash; live, in front of you.
+        </p>
+
+        <form id="researchForm" class="query-form" autocomplete="off">
+          <div class="query-field">
+            <i class="field-icon">&#9906;</i>
+            <textarea
+              id="topicInput"
+              placeholder="Enter a research topic..."
+              autocomplete="off"
+              rows="1"
+            ></textarea>
+          </div>
+          <button type="submit" id="runBtn" class="run-btn">
+            <span class="run-btn-label">Run pipeline</span>
+            <span class="run-btn-arrow">&rarr;</span>
+          </button>
+        </form>
+        <p class="hint-text" id="formHint">
+          Enter any topic and press <strong>Run pipeline</strong> to begin.
+        </p>
+      </section>
+
+      <!-- PIPELINE + FEED -->
+      <section class="console wrap" id="consoleSection">
+        <aside class="rail" aria-label="Pipeline stages">
+          <ol class="rail-list" id="railList">
+            <li class="rail-step" data-step="1">
+              <span class="rail-index">01</span>
+              <div class="rail-copy">
+                <span class="rail-name">Search</span>
+                <span class="rail-desc">Finds recent, reliable sources</span>
+              </div>
+              <span class="rail-state" data-state="idle"></span>
+            </li>
+            <li class="rail-step" data-step="2">
+              <span class="rail-index">02</span>
+              <div class="rail-copy">
+                <span class="rail-name">Read</span>
+                <span class="rail-desc">Scrapes the strongest source</span>
+              </div>
+              <span class="rail-state" data-state="idle"></span>
+            </li>
+            <li class="rail-step" data-step="3">
+              <span class="rail-index">03</span>
+              <div class="rail-copy">
+                <span class="rail-name">Write</span>
+                <span class="rail-desc">Drafts the structured report</span>
+              </div>
+              <span class="rail-state" data-state="idle"></span>
+            </li>
+            <li class="rail-step" data-step="4">
+              <span class="rail-index">04</span>
+              <div class="rail-copy">
+                <span class="rail-name">Critique</span>
+                <span class="rail-desc">Scores and reviews the draft</span>
+              </div>
+              <span class="rail-state" data-state="idle"></span>
+            </li>
+          </ol>
+          <div class="rail-progress-track" aria-hidden="true">
+            <div class="rail-progress-fill" id="railProgressFill"></div>
+          </div>
+        </aside>
+
+        <div class="feed-panel">
+          <div class="feed-topbar">
+            <div class="feed-lights">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="feed-title">agent&ndash;transcript.log</span>
+          </div>
+          <div class="feed-body" id="feedBody">
+            <p class="feed-placeholder" id="feedPlaceholder">
+              &gt; Waiting for a topic. Live agent output will stream
+              here&hellip;
+              <span class="cursor">&#9608;</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- REPORT -->
+      <section class="report-section wrap" id="reportSection" hidden>
+        <div class="report-head">
+          <p class="eyebrow">Final deliverable</p>
+          <h2 class="report-title" id="reportTopicTitle">Research report</h2>
+        </div>
+        <article class="report-card">
+          <div class="report-prose" id="reportProse">
+            <p class="report-placeholder">
+              The finished report will appear here once the writer agent
+              completes its draft.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <!-- CRITIC -->
+      <section class="critic-section wrap" id="criticSection" hidden>
+        <div class="critic-card">
+          <div class="critic-score">
+            <svg viewBox="0 0 120 120" class="score-ring" id="scoreRing">
+              <circle cx="60" cy="60" r="52" class="ring-track" />
+              <circle cx="60" cy="60" r="52" class="ring-fill" id="ringFill" />
+            </svg>
+            <div class="score-number">
+              <span id="scoreValue">&ndash;</span
+              ><span class="score-max">/10</span>
+            </div>
+          </div>
+          <div class="critic-body">
+            <p class="eyebrow">Critic review</p>
+            <div id="criticText" class="critic-text">
+              <p class="report-placeholder">
+                The critic's evaluation, strengths and suggested improvements
+                will appear here.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EMPTY / ERROR STATE -->
+      <section class="wrap" id="errorSection" hidden>
+        <div class="error-card">
+          <strong>The pipeline hit a snag.</strong>
+          <p id="errorText">
+            Something went wrong while contacting the agents.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <span>&copy; 2026 Nexus Research Console. All rights reserved.</span>
+        <span class="footer-credit"
+          >Created by <strong>Uttam Singh</strong></span
+        >
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
