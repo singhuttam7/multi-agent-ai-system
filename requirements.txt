@@ -2,13 +2,10 @@ langchain
 langchain-core
 langchain-community
 
-langchain-openai
 langchain-mistralai
-langchain-huggingface
 
 python-dotenv
 
-chromadb
 sentence-transformers
 
 pydantic
@@ -19,3 +16,4 @@ rich
 
 tavily-python
 beautifulsoup4
+fastapi
